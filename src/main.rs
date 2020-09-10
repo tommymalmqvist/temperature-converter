@@ -36,17 +36,21 @@ struct Temperature {
 }
 
 impl Temperature {
-    pub fn from_str(s: &str) -> Result<Temperature, String> {
+    pub fn from_str(s: &str) -> Result<Temperature, &'static str> {
         let re = Regex::new(r"(^\d{1,3}\.?\d{1,3})([c|f]$)").unwrap();
         let mut temp = Temperature {
             scale: Scale::Celsius,
             temp: 0.0,
         };
-        for cap in re.captures_iter(s) {
-            temp.temp = cap[1].parse::<f32>().unwrap();
-            temp.scale = Scale::from_str(&cap[2]).unwrap();
+        if re.is_match(s) {
+            for cap in re.captures_iter(s) {
+                temp.temp = cap[1].parse::<f32>().unwrap();
+                temp.scale = Scale::from_str(&cap[2]).unwrap();
+            }
+            Ok(temp)
+        } else {
+            Err("Not a valid input")
         }
-        Ok(temp)
     }
 }
 
