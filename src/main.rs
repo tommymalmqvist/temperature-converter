@@ -66,12 +66,33 @@ fn main() {
     let s = s.trim();
 
     let temp = Temperature::from_str(&s);
-    if temp.is_ok() {
-        // begin converting
-        println!("{}", temp.unwrap());
+    match temp {
+        Ok(o1) => {
+            let c = convert(o1);
+            match c {
+                Ok(o2) => println!("{}", o2),
+                Err(e2) => println!("{}", e2),
+            }
+        }
+        Err(e1) => println!("Error: {}", e1),
     }
 }
 
 fn convert(t: Temperature) -> Result<Temperature, &'static str> {
-    Err("Fail!")
+    match t.scale {
+        Scale::Celsius => {
+            let new = Temperature {
+                scale: Scale::Fahrenheit,
+                temp: (t.temp * 1.8) + 32.0,
+            };
+            Ok(new)
+        }
+        Scale::Fahrenheit => {
+            let new = Temperature {
+                scale: Scale::Celsius,
+                temp: ((t.temp - 32.0) * 5.0) / 9.0,
+            };
+            Ok(new)
+        }
+    }
 }
