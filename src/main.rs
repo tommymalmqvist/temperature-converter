@@ -1,6 +1,7 @@
 use regex::Regex;
 use std::fmt;
 use std::io;
+use std::io::Write;
 
 #[derive(Debug)]
 enum Scale {
@@ -56,13 +57,14 @@ impl Temperature {
 
 impl fmt::Display for Temperature {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}{}", &self.temp, &self.scale)
+        write!(f, "{:.2}{}", &self.temp, &self.scale)
     }
 }
 
 fn main() {
     let mut s = String::new();
-    println!("Input:");
+    print!("Input: ");
+    io::stdout().flush().unwrap();
     io::stdin()
         .read_line(&mut s)
         .expect("failed to parse input");
