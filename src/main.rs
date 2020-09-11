@@ -12,10 +12,8 @@ enum Scale {
 impl Scale {
     pub fn from_str(s: &str) -> Result<Scale, &'static str> {
         match s {
-            "c" => Ok(Scale::Celsius),
-            "f" => Ok(Scale::Fahrenheit),
-            "C" => Ok(Scale::Celsius),
-            "F" => Ok(Scale::Fahrenheit),
+            "c" | "C" => Ok(Scale::Celsius),
+            "f" | "F" => Ok(Scale::Fahrenheit),
             _ => Err("Failed to parse"),
         }
     }
@@ -38,7 +36,7 @@ struct Temperature {
 
 impl Temperature {
     pub fn from_str(s: &str) -> Result<Temperature, &'static str> {
-        let re = Regex::new(r"(^\d{1,3}\.?\d{1,3})([c|f]$)").unwrap();
+        let re = Regex::new(r"(^\d{1,3}[\.\d{1,3})]?)([c|f]$)").unwrap();
         let mut temp = Temperature {
             scale: Scale::Celsius,
             temp: 0.0,
