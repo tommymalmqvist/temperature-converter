@@ -75,7 +75,7 @@ fn main() {
             let c = convert(valid_input);
             match c {
                 Ok(converted) => println!("{}", converted),
-                Err(convert_err) => println!("{}", convert_err),
+                Err(convert_error) => println!("{}", convert_error),
             }
         }
         Err(input_error) => println!("Error: {}", input_error),
