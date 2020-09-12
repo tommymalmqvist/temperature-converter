@@ -1,4 +1,5 @@
 use regex::Regex;
+use std::error::Error;
 use std::fmt;
 use std::io;
 use std::io::Write;
@@ -59,7 +60,7 @@ impl fmt::Display for Temperature {
     }
 }
 
-fn main() {
+fn main() -> Result<(), Box<dyn Error>> {
     let mut s = String::new();
     print!("Input: ");
     io::stdout().flush().unwrap();
@@ -69,17 +70,10 @@ fn main() {
 
     let s = s.trim();
 
-    let temp = Temperature::from_str(&s);
-    match temp {
-        Ok(valid_input) => {
-            let c = convert(valid_input);
-            match c {
-                Ok(converted) => println!("{}", converted),
-                Err(convert_error) => println!("{}", convert_error),
-            }
-        }
-        Err(input_error) => println!("Error: {}", input_error),
-    }
+    let temp = Temperature::from_str(&s)?;
+    let convert = convert(temp)?;
+    println!("{}", convert);
+    Ok(())
 }
 
 fn convert(t: Temperature) -> Result<Temperature, &'static str> {
