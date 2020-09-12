@@ -71,14 +71,14 @@ fn main() {
 
     let temp = Temperature::from_str(&s);
     match temp {
-        Ok(o1) => {
-            let c = convert(o1);
+        Ok(valid_input) => {
+            let c = convert(valid_input);
             match c {
-                Ok(o2) => println!("{}", o2),
-                Err(e2) => println!("{}", e2),
+                Ok(converted) => println!("{}", converted),
+                Err(convert_err) => println!("{}", convert_err),
             }
         }
-        Err(e1) => println!("Error: {}", e1),
+        Err(input_error) => println!("Error: {}", input_error),
     }
 }
 
