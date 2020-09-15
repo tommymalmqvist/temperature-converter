@@ -3,15 +3,16 @@ use std::error::Error;
 use std::fmt;
 use std::io;
 use std::io::Write;
+use std::str::FromStr;
 
-#[derive(Debug)]
 enum Scale {
     Celsius,
     Fahrenheit,
 }
 
-impl Scale {
-    pub fn from_str(s: &str) -> Result<Scale, &'static str> {
+impl FromStr for Scale {
+    type Err = &'static str;
+    fn from_str(s: &str) -> Result<Scale, &'static str> {
         match s {
             "c" | "C" => Ok(Scale::Celsius),
             "f" | "F" => Ok(Scale::Fahrenheit),
@@ -35,8 +36,10 @@ struct Temperature {
     temp: f32,
 }
 
-impl Temperature {
-    pub fn from_str(s: &str) -> Result<Temperature, &'static str> {
+impl FromStr for Temperature {
+    type Err = &'static str;
+
+    fn from_str(s: &str) -> Result<Temperature, &'static str> {
         let re = Regex::new(r"(^\d{1,3})(\.\d{1,3})?([c|f]$)").unwrap();
         let mut temp = Temperature {
             scale: Scale::Celsius,
