@@ -5,6 +5,7 @@ use std::io;
 use std::io::Write;
 use std::str::FromStr;
 
+#[derive(Debug)]
 enum Scale {
     Celsius,
     Fahrenheit,
@@ -31,6 +32,7 @@ impl fmt::Display for Scale {
     }
 }
 
+#[derive(Debug)]
 struct Temperature {
     scale: Scale,
     temp: f32,
